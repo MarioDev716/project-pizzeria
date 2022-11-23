@@ -218,9 +218,9 @@
             // console.log('Image class found: ', image);
             if (optionSelected) {
               console.log(optionId + ' is selected');
-              thisProduct.image.classList.add('.' + classNames.menuProduct.imageVisible);
+              thisProduct.imageWrapper.classList.add('.' + classNames.menuProduct.imageVisible);
             } else {
-              thisProduct.image.classList.remove('.' + classNames.menuProduct.imageVisible);
+              thisProduct.imageWrapper.classList.remove('.' + classNames.menuProduct.imageVisible);
             }
           }
         }
