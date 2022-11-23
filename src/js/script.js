@@ -104,6 +104,9 @@
       thisProduct.priceElem = thisProduct.element.querySelector(
         select.menuProduct.priceElem
       );
+      thisProduct.imageWrapper = thisProduct.element.querySelector(
+        select.menuProduct.imageWrapper
+      );
     }
 
     initAccordion() {
@@ -182,32 +185,42 @@
           // this is a place for may code
 
           // check if there is param with a name of paramId in formData and if it includes optionId
-          if (formData[paramId] && formData[paramId].includes(optionId)) {
-            console.log(optionId + ' is selected');
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+          if (optionSelected) {
+            // console.log(optionId + ' is selected');
             // check if the option is not default
             if (!option.default == true) {
               // add option price to price variable
               price += option.price;
-              console.log('Adding price');
-            } 
-/*             else {
-              // check if the option is default
-              console.log(optionId + ' is default.');
-              
-              if(!option.default == false) {
-                // reduce price variable
-                console.log(optionId + ' Is not default - Reducing price!');
-                price -= option.price;
-                
-              }
-            } */
+              // console.log('Adding price');
+            }
           } else {
-            console.log(optionId + ' is not selected');
-            if(option.default == true) {
+            // console.log(optionId + ' is not selected');
+            if (option.default == true) {
               // reduce price variable
-              console.log(optionId + ' Is default - Reducing price!');
+              // console.log(optionId + ' Is default - Reducing price!');
               price -= option.price;
-              
+            }
+          }
+
+          // find image with class .para,Od-optionId
+          const classOption = '.' + paramId + '-' + optionId;
+          const image = thisProduct.imageWrapper.querySelector(
+            classOption
+          );
+          console.log('class: ' + classOption) ;
+          console.log('image: ', image) ;
+          if (image == 'null') {
+            // image didn't found
+            console.log('Option has no image!');
+          } else {
+            // image found
+            // console.log('Image class found: ', image);
+            if (optionSelected) {
+              console.log(optionId + ' is selected');
+              thisProduct.image.classList.add('.' + classNames.menuProduct.imageVisible);
+            } else {
+              thisProduct.image.classList.remove('.' + classNames.menuProduct.imageVisible);
             }
           }
         }
