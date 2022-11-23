@@ -183,23 +183,31 @@
 
           // check if there is param with a name of paramId in formData and if it includes optionId
           if (formData[paramId] && formData[paramId].includes(optionId)) {
-            console.log('Included: ', optionId);
-            // console.log('Price: $' + option.price)
+            console.log(optionId + ' is selected');
             // check if the option is not default
             if (!option.default == true) {
               // add option price to price variable
               price += option.price;
               console.log('Adding price');
-            } else {
+            } 
+/*             else {
               // check if the option is default
-              // console.log('Default');
+              console.log(optionId + ' is default.');
               
-              if(!option.default == true) {
+              if(!option.default == false) {
                 // reduce price variable
-                console.log('Reducing price!')
+                console.log(optionId + ' Is not default - Reducing price!');
                 price -= option.price;
                 
               }
+            } */
+          } else {
+            console.log(optionId + ' is not selected');
+            if(option.default == true) {
+              // reduce price variable
+              console.log(optionId + ' Is default - Reducing price!');
+              price -= option.price;
+              
             }
           }
         }
