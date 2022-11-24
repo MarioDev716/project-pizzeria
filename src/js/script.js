@@ -189,14 +189,14 @@
           if (optionSelected) {
             // console.log(optionId + ' is selected');
             // check if the option is not default
-            if (!option.default == true) {
+            if (!option.default) {
               // add option price to price variable
               price += option.price;
               // console.log('Adding price');
             }
           } else {
             // console.log(optionId + ' is not selected');
-            if (option.default == true) {
+            if (option.default) {
               // reduce price variable
               // console.log(optionId + ' Is default - Reducing price!');
               price -= option.price;
@@ -205,22 +205,22 @@
 
           // find image with class .para,Od-optionId
           const classOption = '.' + paramId + '-' + optionId;
-          const image = thisProduct.imageWrapper.querySelector(
+          const optionImage = thisProduct.imageWrapper.querySelector(
             classOption
           );
           console.log('class: ' + classOption) ;
-          console.log('image: ', image) ;
-          if (image == 'null') {
-            // image didn't found
-            console.log('Option has no image!');
-          } else {
+          console.log('image: ', optionImage) ;
+          
+          if (optionImage){
             // image found
             // console.log('Image class found: ', image);
             if (optionSelected) {
               console.log(optionId + ' is selected');
-              thisProduct.imageWrapper.classList.add('.' + classNames.menuProduct.imageVisible);
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+              console.log('.active was added');
             } else {
-              thisProduct.imageWrapper.classList.remove('.' + classNames.menuProduct.imageVisible);
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
+              console.log('.active was removed');
             }
           }
         }
