@@ -65,8 +65,8 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
-      thisProduct.processOrder();
       thisProduct.initAmountWidget();
+      thisProduct.processOrder();
     }
 
     renderInMenu() {
@@ -291,10 +291,8 @@
 
     announce() {
       const thisWidget = this;
-
       const event = new Event('updated');
       thisWidget.element.dispatchEvent(event);
-
       console.log('announce!');
     }
   }
