@@ -194,6 +194,7 @@
       thisProduct.dom.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -210,7 +211,7 @@
     processOrder() {
       const thisProduct = this;
       // console.clear();
-      console.log('Product name: ' + thisProduct.id);
+      console.log('Product name: ', thisProduct.id);
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
 
@@ -262,8 +263,32 @@
       }
       /* multiply price by amount */
       price *= thisProduct.amountWidget.value;
+      const priceSingle = price;
+
+      console.log('price: ' + price);
       // update calculated price in the HTML
       thisProduct.dom.priceElem.innerHTML = price;
+    }
+
+    addToCart() {
+      const thisProduct = this;
+      app.cart.add(thisProduct);
+      console.log('addToCart!');
+      console.log('priceSingle: $' + thisProduct.priceSingle);
+
+      thisProduct.prepareCartProduct();
+    }
+
+    prepareCartProduct() {
+      const thisProduct = this;
+      const productSummary = {
+        id: thisProduct.id,
+        name: thisProduct.data.name,
+        ammount: thisProduct.amountWidget.value,
+        priceSingle: thisProduct.priceSingle,
+        price: thisProduct.priceSingle * thisProduct.amountWidget.value,
+      };
+      console.log('productSummary: ', productSummary);
     }
   }
 
@@ -369,6 +394,7 @@
 
     add(menuProduct) {
       // const thisCart = this;
+      console.log('adding product', menuProduct);
     }
   }
 
