@@ -105,6 +105,7 @@
       thisProduct.initOrderForm();
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
+      // thisProduct.prepareCartProductParams();
     }
 
     renderInMenu() {
@@ -211,7 +212,7 @@
     processOrder() {
       const thisProduct = this;
       // console.clear();
-      console.log('Product name: ', thisProduct.id);
+      // console.log('Product name: ', thisProduct.id);
       // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
 
@@ -270,9 +271,8 @@
 
     addToCart() {
       const thisProduct = this;
-      app.cart.add(thisProduct.prepareCartProduct);
-      thisProduct.prepareCartProduct();
-      console.log(thisProduct.prepareCartProduct);
+      // thisProduct.prepareCartProduct();
+      app.cart.add(thisProduct.prepareCartProduct());
     }
 
     prepareCartProduct() {
@@ -283,9 +283,46 @@
         ammount: thisProduct.amountWidget.value,
         priceSingle: thisProduct.priceSingle,
         price: thisProduct.priceSingle * thisProduct.amountWidget.value,
-        params: '',
+        params: thisProduct.prepareCartProductParams(),
       };
+      // console.log('productSummary: ', productSummary);
       return productSummary;
+    }
+
+    prepareCartProductParams() {
+      const thisProduct = this;
+      // console.clear();
+      // console.log('Product name: ', thisProduct.id);
+      // covert form to object structure e.g. { sauce: ['tomato'], toppings: ['olives', 'redPeppers']}
+      const formData = utils.serializeFormToObject(thisProduct.dom.form);
+      const params = {};
+      // for every category (param)...
+      for (let paramId in thisProduct.data.params) {
+        const param = thisProduct.data.params[paramId];
+
+        // create category param in params const eg. params = { ingredients: { name: 'Ingredients', options: {}}}
+        params[paramId] = {
+          label: param.label,
+          options: {},
+        };
+
+        // for every option in this category
+        for (let optionId in param.options) {
+          // const option = param.options[optionId];
+          const optionSelected =
+            formData[paramId] && formData[paramId].includes(optionId);
+          if (optionSelected) {
+            // option is selected!
+            // console.log('paramId: ' + paramId);
+            // console.log('optionId: ' + optionId);
+            const optionLabel = param.options[optionId].label;
+            // console.log('optionLabel: ', optionLabel);
+            params[paramId].options[optionId] = optionLabel;
+          }
+        }
+      }
+      console.log('params: ', params);
+      return params;
     }
   }
 
@@ -380,6 +417,9 @@
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(
         select.cart.toggleTrigger
       );
+      thisCart.productList = thisCart.dom.wrapper.querySelector(
+        select.cart.productList
+      );
     }
 
     initActions() {
@@ -390,8 +430,14 @@
     }
 
     add(menuProduct) {
-      // const thisCart = this;
+      const thisCart = this;
       console.log('adding product', menuProduct);
+      const generatedHTML = templates.cartProduct(thisCart.data);
+      /* create element using utils.createDOMFromHTML */
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      thisCart.dom.productList.appendChild(generatedDOM);
+
+      //menuContainer.appendChild(thisProduct.element);
     }
   }
 
