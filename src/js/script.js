@@ -423,7 +423,24 @@
       thisCart.dom.productList = thisCart.dom.wrapper.querySelector(
         select.cart.productList
       );
-      // console.log('Test: ', thisCart.dom.productList);
+      thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(
+        select.cart.deliveryFee
+      );
+      thisCart.dom.subtotalPrice = thisCart.dom.wrapper.querySelector(
+        select.cart.subtotalPrice
+      );
+      thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(
+        select.cart.totalNumber
+      );
+      thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelector(
+        select.cart.totalPrice
+      );
+      thisCart.dom.totalPrice2 = thisCart.dom.wrapper.querySelector(
+        '.cart__order-total .cart__order-price-sum strong'
+      );
+
+      console.log('Test: ', thisCart.dom.totalPrice2);
+      console.log('thisCart.dom.totalPrice2: ', thisCart.dom.totalPrice2);
     }
 
     initActions() {
@@ -457,18 +474,23 @@
       console.log('deliveryFee: $' + deliveryFee);
       for (let product of thisCart.products) {
         console.log('product: ', product);
-        totalNumber += 1;
+        totalNumber += product.amount;
         console.log('totalNumber: ' + totalNumber);
         subtotalPrice += product.price;
-        console.log('subtotalPrice: $' + subtotalPrice);
+        console.log('totalPrice: $' + (subtotalPrice + deliveryFee));
       }
-      if (thisCart.products) {
-        subtotalPrice += deliveryFee;
-        thisCart.totalPrice = subtotalPrice;
-        console.log('subtotalPrice with delivery: $' + subtotalPrice);
+      if (totalNumber > 0) {
+        // subtotalPrice += deliveryFee;
+        thisCart.dom.deliveryFee.innerHTML = deliveryFee;
+        thisCart.dom.totalPrice.innerHTML = subtotalPrice + deliveryFee;
+        thisCart.dom.totalPrice2.innerHTML = subtotalPrice + deliveryFee;
+        thisCart.totalPrice = subtotalPrice + deliveryFee;
       } else {
         console.log('Cart is empty!');
       }
+      thisCart.dom.totalNumber.innerHTML = totalNumber;
+      thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+      console.log('thisCart.totalPrice: ' + thisCart.totalPrice);
     }
   }
 
