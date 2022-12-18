@@ -407,6 +407,16 @@
       thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(
         select.cart.totalPrice
       );
+
+      // Zacznij od przygotowania referencji do elementu formularza. thisCart.dom.form powinien kierować do elementu ukrytego pod selektorem select.cart.form (to nasz formularz)
+
+      thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+      thisCart.dom.phone = thisCart.dom.wrapper.querySelector(
+        select.cart.phone
+      );
+      thisCart.dom.address = thisCart.dom.wrapper.querySelector(
+        select.cart.address
+      );
     }
 
     initActions() {
@@ -420,6 +430,10 @@
       thisCart.dom.productList.addEventListener('remove', function (event) {
         console.log('event.detail.cartProduct: ', event.detail.cartProduct);
         thisCart.remove(event.detail.cartProduct);
+      });
+      thisCart.dom.form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        thisCart.sendOrder();
       });
     }
 
@@ -462,6 +476,8 @@
       }
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
+      thisCart.subtotalPrice = subtotalPrice;
+      thisCart.totalNumber = totalNumber;
     }
 
     remove(cartProduct) {
@@ -472,6 +488,23 @@
       console.log('thisCart: ', thisCart);
       console.log('currentIndex: ' + currentIndex);
       thisCart.update();
+    }
+
+    sendOrder() {
+      const thisCart = this;
+      const url = settings.db.url + '/' + settings.db.orders;
+      thisCart.payload = {
+        phone: thisCart.dom.phone.value,
+        address: thisCart.dom.address.value,
+        totalPrice: thisCart.totalPrice,
+        subtotalPrice: thisCart.subtotalPrice,
+        totalNumber: thisCart.totalNumber,
+        deliveryFee: thisCart.deliveryFee,
+      };
+      for (let prod of thisCart.products) {
+        thisCart.payload.products.push(prod.getData());
+      }
+      console.log('thisCart.payload: ', thisCart.payload);
     }
   }
 
@@ -547,6 +580,20 @@
         console.log('Remove!');
         thisCartProduct.remove();
       });
+    }
+
+    getData() {
+      const thisCartProduct = this;
+      const detail = {
+        id: thisCartProduct.id,
+        amount: thisCartProduct.amount,
+        price: thisCartProduct.price,
+        priceSingle: thisCartProduct.priceSingle,
+        name: thisCartProduct.name,
+        params: thisCartProduct.params,
+      };
+      console.log('detail: ', detail);
+      return detail;
     }
   }
 
