@@ -458,11 +458,12 @@
       let deliveryFee = settings.cart.defaultDeliveryFee;
       let totalNumber = 0;
       let subtotalPrice = 0;
+      console.clear();
       console.log('Update!!!');
       for (let product of thisCart.products) {
         console.log('product: ', product);
+        console.log('product.amount: ' + product.amount);
         totalNumber += product.amount;
-        console.log('totalNumber: ' + totalNumber);
         subtotalPrice += product.price;
         console.log('totalPrice: $' + (subtotalPrice + deliveryFee));
       }
@@ -477,7 +478,7 @@
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
       thisCart.subtotalPrice = subtotalPrice;
-      thisCart.totalNumber = totalNumber;
+      console.log('totalNumber: ' + totalNumber);
     }
 
     remove(cartProduct) {
@@ -493,18 +494,33 @@
     sendOrder() {
       const thisCart = this;
       const url = settings.db.url + '/' + settings.db.orders;
-      thisCart.payload = {
+      const payload = {
         phone: thisCart.dom.phone.value,
         address: thisCart.dom.address.value,
         totalPrice: thisCart.totalPrice,
         subtotalPrice: thisCart.subtotalPrice,
         totalNumber: thisCart.totalNumber,
         deliveryFee: thisCart.deliveryFee,
+        products: [],
+      };
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'aplication/json',
+        },
+        body: JSON.stringify(payload),
       };
       for (let prod of thisCart.products) {
-        thisCart.payload.products.push(prod.getData());
+        payload.products.push(prod.getData());
       }
       console.log('thisCart.payload: ', thisCart.payload);
+      fetch(url, options)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (parsedResponse) {
+          console.log('parsedResponse: ', parsedResponse);
+        });
     }
   }
 
@@ -554,6 +570,8 @@
         thisCartProduct.price =
           thisCartProduct.dom.input.value * thisCartProduct.priceSingle;
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+        thisCartProduct.amount = thisCartProduct.dom.input.value;
+        console.log('thisCartProduct.amount: ' + thisCartProduct.amount);
       });
     }
 
