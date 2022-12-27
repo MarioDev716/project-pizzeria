@@ -516,11 +516,13 @@
       console.log('thisCart.payload: ', thisCart.payload);
       fetch(url, options)
         .then(function (response) {
+          console.log('response: ', response);
           return response.json();
         })
         .then(function (parsedResponse) {
           console.log('parsedResponse: ', parsedResponse);
         });
+      console.log('payload: ', payload);
     }
   }
 
