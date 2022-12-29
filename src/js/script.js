@@ -505,6 +505,9 @@
         deliveryFee: thisCart.deliveryFee,
         products: [],
       };
+      for (let prod of thisCart.products) {
+        payload.products.push(prod.getData());
+      }
       const options = {
         method: 'POST',
         headers: {
@@ -512,12 +515,9 @@
         },
         body: JSON.stringify(payload),
       };
-      for (let prod of thisCart.products) {
-        payload.products.push(prod.getData());
-      }
       fetch(url, options)
         .then(function (response) {
-          // console.log('response: ', response);
+          console.log('response: ', response);
           return response.json();
         })
         .then(function (parsedResponse) {
