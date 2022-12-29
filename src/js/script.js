@@ -478,6 +478,8 @@
       thisCart.dom.totalNumber.innerHTML = totalNumber;
       thisCart.dom.subtotalPrice.innerHTML = subtotalPrice;
       thisCart.subtotalPrice = subtotalPrice;
+      thisCart.totalNumber = totalNumber;
+      thisCart.deliveryFee = deliveryFee;
       console.log('totalNumber: ' + totalNumber);
     }
 
@@ -506,17 +508,16 @@
       const options = {
         method: 'POST',
         headers: {
-          'Content-Type': 'aplication/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       };
       for (let prod of thisCart.products) {
         payload.products.push(prod.getData());
       }
-      console.log('thisCart.payload: ', thisCart.payload);
       fetch(url, options)
         .then(function (response) {
-          console.log('response: ', response);
+          // console.log('response: ', response);
           return response.json();
         })
         .then(function (parsedResponse) {
@@ -572,7 +573,7 @@
         thisCartProduct.price =
           thisCartProduct.dom.input.value * thisCartProduct.priceSingle;
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
-        thisCartProduct.amount = thisCartProduct.dom.input.value;
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
         console.log('thisCartProduct.amount: ' + thisCartProduct.amount);
       });
     }
