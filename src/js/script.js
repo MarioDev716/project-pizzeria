@@ -335,8 +335,8 @@
       if (
         thisWidget.value !== newValue &&
         !isNaN(newValue) &&
-        newValue >= settings.amountWidget.defaultMin - 1 &&
-        newValue <= settings.amountWidget.defaultMax + 1
+        newValue >= settings.amountWidget.defaultMin &&
+        newValue <= settings.amountWidget.defaultMax
       ) {
         thisWidget.value = newValue;
         thisWidget.announce();
